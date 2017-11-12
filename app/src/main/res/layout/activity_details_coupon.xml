@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#FFF"
+              android:orientation="vertical"
+              tools:context="admin.ashak3lena.adminashak3elna.Coupon.DetailsCoupon">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/ViewPagerScanCoupon"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
+
+        <LinearLayout
+            android:id="@+id/timer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ViewPagerScanCoupon"
+            android:background="@color/orange"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/coupon_used"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/date_created"
+                android:layout_alignBottom="@+id/date_created"
+                android:layout_alignEnd="@+id/btnReActive"
+                android:layout_gravity="center"
+
+                android:layout_weight="0.25"
+                android:background="@drawable/border_coupon_material"
+                android:fontFamily="@font/hacen_tunisia"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:text="الكوبون غير مستخدم"
+                android:textColor="#FFF"
+                android:textSize="25dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/date_created"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/timer"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/hacen_tunisia"
+            android:text="تاريخ الاضافة : "
+            android:textColor="#000"/>
+
+        <TextView
+            android:id="@+id/date_end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date_created"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/hacen_tunisia"
+            android:text="تاريخ الانتهاء : "
+            android:textColor="#000"/>
+
+        <TextView
+            android:id="@+id/number_coupon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date_end"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/hacen_tunisia"
+            android:text="رقم الكوبون : "
+            android:textColor="#000"/>
+
+        <TextView
+            android:id="@+id/points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/number_coupon"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/hacen_tunisia"
+            android:text="عدد النقاط : "
+            android:textColor="#000"/>
+
+
+        <TextView
+            android:id="@+id/coupon_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/points"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/hacen_tunisia"
+            android:text="الحالة : "
+            android:textColor="#000"/>
+
+        <Button
+            android:id="@+id/btnReActive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/coupon_status"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="19dp"
+            android:background="@drawable/button_orange"
+            android:gravity="center"
+            android:paddingLeft="50dp"
+            android:fontFamily="@font/hacen_tunisia"
+            android:paddingRight="50dp"
+            android:text="استخدام"
+            android:textColor="#FFF"
+            android:textSize="17dp"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

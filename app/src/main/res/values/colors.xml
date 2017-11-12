@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f25822</color>
+    <color name="colorPrimaryDark">#babd16</color>
+    <color name="colorAccent">#babd16</color>
+    <color name="toolbarColor">#eeee</color>
+    <color name="holo_gray">#717171</color>
+
+    <color name="colorHighlight">#e2e2e2</color>
+
+    <color name="green">#babd16</color>
+    <color name="silver">#ebebeb</color>
+    <color name="orange">#f25822</color>
+    <color name="dark_orange">#c6491b</color>
+    <color name="grey">#626262</color>
+    <color name="grey_dark">#575757</color>
+    <color name="sliver_back">#e5e5e5</color>
+    <color name="trans">#95babd16</color>
+
+    <color name="blue_dark">#ff1976d1</color>
+    <color name="blue">#ea0f07</color>
+    <color name="background">#ff333333</color>
+    <color name="shadow">#AA000000</color>
+    <color name="black">#000</color>
+    <color name="white">#FFF</color>
+    <color name="black_gray">#585757</color>
+
+    <color name="internet">#f2f2f2</color>
+</resources>
