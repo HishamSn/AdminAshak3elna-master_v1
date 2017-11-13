@@ -41,45 +41,26 @@ public class ScanCoupon extends AppCompatActivity {
     }
     public void checkCouponScan(final String barcode) {
 
-        Log.e("bobo", barcode.toString());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constatns.MAIN_API + Constatns.Check_SCAN,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Log.e("coupon_status", response);
 
                             JSONObject obj1Json = new JSONObject(response);
-                            Log.e("coco", obj1Json.toString());
-                            String idCoupon = obj1Json.getString("id");//
 
-                            String barcode = obj1Json.getString("barcode");
-                            String enddate = obj1Json.getString("enddate");
-                            String serialnumber = obj1Json.getString("serialnumber");
-                            String points = obj1Json.getString("points");
-                            String used = obj1Json.getString("used");
                             String msg = obj1Json.getString("msg");
                             String f = obj1Json.getString("f");
-                            Log.e("soao", "this is : "+used .toString());
 
-//                            Dialogs dialogs = new Dialogs(ScanCoupon.this);
-//                            if(f.equals("0")){
-//                                dialogs.error_scan_dialog("عذرا !",msg,ScanCoupon.this);
-//                            }else {
-//                                Intent i = new Intent(ScanCoupon.this, DetailsCoupon.class);
-//                                i.putExtra("barcode", b);
-//                                startActivity(i);
-//                                finish();
-//                            }
-                            String flag = obj1Json.getString("f");
-                            String msg2 = obj1Json.getString("msg2");
-                            String did = obj1Json.getString("did");
-                            String scanenddate = obj1Json.getString("scanenddate");
-                            String scanendtime = obj1Json.getString("scanendtime");
-                            String currentdate = obj1Json.getString("currentdate");
-                            String currenttime = obj1Json.getString("currenttime");
-
-
+                            Dialogs dialogs = new Dialogs(ScanCoupon.this);
+                            if(f.equals("0")){
+                                dialogs.error_scan_dialog("عذرا !",msg,ScanCoupon.this);
+                            }else {
+                                Intent i = new Intent(ScanCoupon.this, DetailsCoupon.class);
+                                i.putExtra("barcode", barcode);
+                                startActivity(i);
+                                finish();
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -95,9 +76,9 @@ public class ScanCoupon extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<String, String>();
 
-                params.put("uid", uid);
-                params.put("barcode", barcode);
-                params.put("token", token);
+                params.put("uid", "3");
+                params.put("barcode", "495733320892");
+                params.put("token", "c9f0f895fb98ab9159f51fd0297e236d");
                 return params;
             }
         };
@@ -117,24 +98,18 @@ public class ScanCoupon extends AppCompatActivity {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    String barcode=result.getContents().toString();
-                    String TAG="Main";
-                    Log.e(TAG, "barcode1" + barcode);
-                    Log.e(TAG, "barcode2" + result.getContents());
+                    checkCouponScan(result.getContents().toString());
+                    Intent i = new Intent(ScanCoupon.this, DetailsCoupon.class);
+                    i.putExtra("barcode", result.getContents().toString());
+                    startActivity(i);
+                    finish();
 
-                    Toast.makeText(context,barcode,Toast.LENGTH_SHORT).show();
-                    Toast.makeText(context,result.toString(),Toast.LENGTH_SHORT).show();
-                    checkCouponScan(barcode);
-                Intent i = new Intent(ScanCoupon.this, DetailsCoupon.class);
-                i.putExtra("barcode", result.getContents().toString());
-                startActivity(i);
-                finish();
+
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data);
             }
         }else{
-            dialogErrorInternet(ScanCoupon.this);
         }
 
     }

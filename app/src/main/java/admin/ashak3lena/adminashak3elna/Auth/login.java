@@ -61,7 +61,7 @@ public class login extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
     }
 
-        public void login () {
+    public void login () {
 
         final String username = etUsername.getText().toString();
         final String password = etPass.getText().toString();
@@ -89,19 +89,21 @@ public class login extends AppCompatActivity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.e("messi", response.toString());
+
 
                             try {
-                                
+                                Log.e("messi", response.toString());
                                 JSONObject jsonObject = new JSONObject(response);
+
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("aaData");
-                                String f = jsonObject1.getString("f");
                                 String flag = jsonObject1.getString("flag");
-                                final String token = jsonObject1.getString("token");
-                                final String uid = jsonObject1.getString("uid");
 
+                                int f = jsonObject1.getInt("f");
+//                                Toast.makeText(login.this, String.valueOf(f), Toast.LENGTH_SHORT).show();
+                                Log.e("dfgd", String.valueOf(f));
 
-                                if(f.equals("1")){
+                                if(f == 1){
+                                    final String token = jsonObject1.getString("token");
                                     progressDialog.dismiss();
                                     final SweetAlertDialog dialog = new SweetAlertDialog(login.this, SweetAlertDialog.SUCCESS_TYPE);
                                     dialog.setTitleText("شكرا لك");
@@ -117,13 +119,14 @@ public class login extends AppCompatActivity {
                                             startActivity(i);
                                             editor.putBoolean("loggedin", true);
                                             editor.putString("token", token);
-                                            editor.putString("uid", uid);
+                                            editor.putString("uid", etUsername.getText().toString());
                                             editor.commit();
                                             finish();
                                         }
                                     });
 
-                                }else{
+                                }else if(f == 0){
+
                                     progressDialog.dismiss();
                                     final SweetAlertDialog dialog = new SweetAlertDialog(login.this, SweetAlertDialog.ERROR_TYPE);
                                     dialog.setTitleText("عذرا !");
@@ -137,7 +140,10 @@ public class login extends AppCompatActivity {
                                             dialog.dismiss();
                                         }
                                     });
+                                }else{
+                                    progressDialog.dismiss();
                                 }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -160,6 +166,5 @@ public class login extends AppCompatActivity {
             };
             MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
         }
-        }
-
+    }
 }
