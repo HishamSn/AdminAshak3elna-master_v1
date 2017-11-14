@@ -9,8 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import admin.ashak3lena.adminashak3elna.Auth.login;
-import admin.ashak3lena.adminashak3elna.Coupon.ScanCoupon;
-import admin.ashak3lena.adminashak3elna.utils.util;
+import admin.ashak3lena.adminashak3elna.Coupon.*;
+import admin.ashak3lena.adminashak3elna.utils.*;
 import daboubi.khalid.faisalawe.com.sweetdialog.SweetAlertDialog;
 
 public class Home extends AppCompatActivity {
@@ -24,6 +24,13 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        StartUp.getInstance().changeLanguage("ar");
+
+        if (util.haveNetworkConnection(Home.this)) {
+
+        } else {
+            util.dialogErrorInternet(Home.this);
+        }
         btnLogout = (ImageButton) findViewById(R.id.btnLogout);
         btnScan = (ImageButton) findViewById(R.id.btnScan);
         sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
@@ -35,8 +42,6 @@ public class Home extends AppCompatActivity {
                 logout();
             }
         });
-
-
 
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,8 +57,6 @@ public class Home extends AppCompatActivity {
         });
 
     }
-
-
 
     public void logout(){
         if (sharedPreferences.getBoolean("loggedin", false)) {
@@ -105,5 +108,25 @@ public class Home extends AppCompatActivity {
         }
     }
 
-    
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        StartUp.getInstance().changeLanguage("ar");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        StartUp.getInstance().changeLanguage("ar");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        StartUp.getInstance().changeLanguage("ar");
+    }
+
+
+
 }

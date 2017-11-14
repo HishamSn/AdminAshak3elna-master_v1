@@ -6,10 +6,15 @@ import android.content.res.*;
 import android.graphics.Typeface;
 import android.net.*;
 
+import android.support.v4.view.ViewPager;
 import android.util.*;
+import android.view.*;
+import android.widget.*;
 
 import java.util.*;
 
+import admin.ashak3lena.adminashak3elna.R;
+import pl.droidsonroids.gif.GifImageView;
 
 
 /**
@@ -59,31 +64,32 @@ public class util {
     }
 
     public static void dialogErrorInternet(final Activity activity){
-//        LayoutInflater inflater = activity.getLayoutInflater();
-//        View v = inflater.inflate(R.layout.check_internet_connection, null);
-//
-//        GifImageView gifImageView = v.findViewById(R.id.gif_internet);
-//        TextView txtInternet = (TextView) v.findViewById(R.id.txtinternet);
-//        Button btnRetry = (Button) v.findViewById(R.id.btnRetry);
-//
-//        txtInternet.setTypeface(util.changeFont(activity));
-//        btnRetry.setTypeface(util.changeFont(activity));
-//
-//        final Dialog dialog = new Dialog(activity, R.style.DialogThemeWhite);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//
-//        btnRetry.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(util.haveNetworkConnection(activity)){
-//                    dialog.dismiss();
-//                }
-//            }
-//        });
-//        dialog.setContentView(v);
-//        dialog.show();
-//        Window window_register = dialog.getWindow();
-//        window_register.setLayout(ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View v = inflater.inflate(R.layout.check_internet_connection, null);
+
+        GifImageView gifImageView = v.findViewById(R.id.gif_internet);
+        TextView txtInternet = (TextView) v.findViewById(R.id.txtinternet);
+        Button btnRetry = (Button) v.findViewById(R.id.btnRetry);
+
+        txtInternet.setTypeface(util.changeFont(activity));
+        btnRetry.setTypeface(util.changeFont(activity));
+
+        final Dialog dialog = new Dialog(activity, R.style.DialogThemeWhite);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(util.haveNetworkConnection(activity)){
+                    dialog.dismiss();
+                    activity.recreate();
+                }
+            }
+        });
+        dialog.setContentView(v);
+        dialog.show();
+        Window window_register = dialog.getWindow();
+        window_register.setLayout(ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
     }
 
     private static final String LANGUAGE_APP = "LANGUAGE_APP";

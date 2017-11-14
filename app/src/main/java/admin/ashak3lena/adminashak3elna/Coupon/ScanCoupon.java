@@ -76,9 +76,9 @@ public class ScanCoupon extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<String, String>();
 
-                params.put("uid", "3");
-                params.put("barcode", "495733320892");
-                params.put("token", "c9f0f895fb98ab9159f51fd0297e236d");
+                params.put("uid", sharedPreferences.getString("uid", "0"));
+                params.put("barcode", barcode);
+                params.put("token", sharedPreferences.getString("token", "0"));
                 return params;
             }
         };

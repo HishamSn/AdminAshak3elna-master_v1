@@ -18,17 +18,22 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:icon">
         <activity android:name=".Home"></activity>
-        <activity android:name=".Coupon.ScanCoupon"></activity>
+        <activity android:name=".Coupon.ScanCoupon">
+
+        </activity>
         <activity android:name=".Auth.login">
 
         </activity>
-        <activity android:name=".Coupon.DetailsCoupon"></activity>
-        <activity android:name=".SplashScreen">
+        <activity android:name=".Coupon.DetailsCoupon">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".SplashScreen">
+
         </activity>
     </application>
 

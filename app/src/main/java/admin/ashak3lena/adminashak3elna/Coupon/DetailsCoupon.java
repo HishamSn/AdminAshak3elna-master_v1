@@ -1,6 +1,6 @@
 package admin.ashak3lena.adminashak3elna.Coupon;
 
-import android.app.ProgressDialog;
+import android.app.*;
 import android.content.*;
 import android.graphics.Color;
 import android.support.v4.view.*;
@@ -33,9 +33,17 @@ public class DetailsCoupon extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getData();
         setContentView(R.layout.activity_details_coupon);
+        StartUp.getInstance().changeLanguage("ar");
+        (findViewById(R.id.details_coupon)).setVisibility(View.INVISIBLE);
+
         init();
+        if (util.haveNetworkConnection(DetailsCoupon.this)) {
+            getData();
+        } else {
+            util.dialogErrorInternet(DetailsCoupon.this);
+        }
+
 //        getResources().getString(R.string.mystring)
     }
 
@@ -44,9 +52,8 @@ public class DetailsCoupon extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
         bundle = getIntent().getExtras();
         barcode = bundle.getString("barcode");
-        Toast.makeText(this, "" + barcode, Toast.LENGTH_LONG).show();
 
-        barcode = "495733320892";
+//        barcode = "959426386104";
 
         viewPager = (ViewPager) findViewById(R.id.ViewPagerScanCoupon);
 
@@ -80,9 +87,9 @@ public class DetailsCoupon extends AppCompatActivity {
 //        finish();
     }
 
-
     public void getData() {
         final ProgressDialog pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
         pDialog.show();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constatns.MAIN_API + Constatns.Check_SCAN,
@@ -90,20 +97,19 @@ public class DetailsCoupon extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            Log.e("daboubi",response);
                             JSONObject obj1Json = new JSONObject(response);
-
+                            msg = obj1Json.getString("msg");
                             String b = obj1Json.getString("barcode");
                             if (b.equals(barcode)) {
                                 String d = obj1Json.getString("currentdate") + " " + obj1Json.getString("currenttime");
                                 String f = obj1Json.getString("scanenddate") + " " + obj1Json.getString("scanendtime");
                                 scanStartDate = d;
                                 scanEndDate = f;
-
-
+                                
                                 id = obj1Json.getString("id");
                                 enddate = obj1Json.getString("enddate");
                                 points = obj1Json.getString("points");
-                                msg = obj1Json.getString("msg");
                                 delaerID = obj1Json.getString("did");
                                 startdate = obj1Json.getString("scanenddate");
                                 msg2 = obj1Json.getString("msg2");
@@ -113,7 +119,6 @@ public class DetailsCoupon extends AppCompatActivity {
                                 txtNumCoupons.setText("الباركود : " + barcode);
                                 txtPoints.setText("عدد النقاط : " + points);
                                 used = obj1Json.getString("used");
-
 
                                 if (used.equals("1")) {
                                     btnReActive.setVisibility(View.GONE);
@@ -130,8 +135,15 @@ public class DetailsCoupon extends AppCompatActivity {
                                     txtStatus.setText("الكوبون غير مستخدم");
                                     coupon_used.setText("الكوبون غير مستخدم");
                                 }
+                                (findViewById(R.id.details_coupon)).setVisibility(View.VISIBLE);
 
                                 pDialog.dismiss();
+                            }
+                            else
+                            {
+                                pDialog.dismiss();
+                                dialogUsedCoupon(msg,false);
+
                             }
 
                         } catch (JSONException e) {
@@ -148,9 +160,9 @@ public class DetailsCoupon extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<String, String>();
 
-                params.put("uid", "3");
-                params.put("barcode", "992559466347");
-                params.put("token", "c9f0f895fb98ab9159f51fd0297e236d");
+                params.put("uid", sharedPreferences.getString("uid", "0"));
+                params.put("barcode", barcode);
+                params.put("token", sharedPreferences.getString("token", "0"));
                 return params;
             }
         };
@@ -173,8 +185,10 @@ public class DetailsCoupon extends AppCompatActivity {
 
                            if (check_f.equals("1"))
                            {
-                               dialogUsedCoupon(Flag);
+                               dialogUsedCoupon(Flag,true);
                            }
+
+                            getData();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -190,9 +204,9 @@ public class DetailsCoupon extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<String, String>();
 
-                params.put("uid", "3");
-                params.put("barcode", "992559466347");
-                params.put("token", "c9f0f895fb98ab9159f51fd0297e236d");
+                params.put("uid", sharedPreferences.getString("uid", "0"));
+                params.put("barcode", barcode);
+                params.put("token", sharedPreferences.getString("token", "0"));
                 return params;
             }
         };
@@ -200,10 +214,10 @@ public class DetailsCoupon extends AppCompatActivity {
     }
 
 
-    public void dialogUsedCoupon(String Msg) {
+    public void dialogUsedCoupon(String Msg, final boolean back) {
         final SweetAlertDialog dialog = new SweetAlertDialog(DetailsCoupon.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
         dialog.setCustomImage(R.drawable.logo_menu);
-        dialog.setContentText(Msg);
+        dialog.setTitleText(Msg);
         dialog.setConfirmText("موافق");
         dialog.setColorTitleText(Color.parseColor("#000000"));
         dialog.show();
@@ -211,8 +225,33 @@ public class DetailsCoupon extends AppCompatActivity {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 dialog.dismiss();
+                if (!back)
+                {
+                    Intent i = new Intent(getApplicationContext(), Home.class);
+                    startActivity(i);
+                }
             }
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        StartUp.getInstance().changeLanguage("ar");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        StartUp.getInstance().changeLanguage("ar");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        StartUp.getInstance().changeLanguage("ar");
+    }
+
 }
+
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF">
+
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gif_internet"
+        android:background="@drawable/internet"
+        android:scaleType="fitXY"
+        android:layout_width="220dp"
+        android:layout_height="200dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/txtinternet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="لا يوجد اتصال بالانترنت"
+        android:layout_below="@+id/gif_internet"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:layout_marginTop="43dp" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@color/orange"
+        android:text="إعادة المحاولة"
+        android:textColor="@color/internet"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="52dp"
+        android:id="@+id/btnRetry" />
+
+</RelativeLayout>
