@@ -40,7 +40,6 @@ public class ScanCoupon extends AppCompatActivity {
         }
     }
     public void checkCouponScan(final String barcode) {
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constatns.MAIN_API + Constatns.Check_SCAN,
                 new Response.Listener<String>() {
                     @Override
@@ -54,7 +53,7 @@ public class ScanCoupon extends AppCompatActivity {
 
                             Dialogs dialogs = new Dialogs(ScanCoupon.this);
                             if(f.equals("0")){
-                                dialogs.error_scan_dialog("عذرا !",msg,ScanCoupon.this);
+                            //    dialogs.error_scan_dialog("عذرا !",msg,ScanCoupon.this);
                             }else {
                                 Intent i = new Intent(ScanCoupon.this, DetailsCoupon.class);
                                 i.putExtra("barcode", barcode);
@@ -98,7 +97,8 @@ public class ScanCoupon extends AppCompatActivity {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    checkCouponScan(result.getContents().toString());
+          //          checkCouponScan(result.getContents().toString());
+                    checkCouponScan("319059962582");
                     Intent i = new Intent(ScanCoupon.this, DetailsCoupon.class);
                     i.putExtra("barcode", result.getContents().toString());
                     startActivity(i);
