@@ -5,8 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.*;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -18,8 +18,7 @@ import org.json.*;
 
 import java.util.*;
 
-import admin.ashak3lena.adminashak3elna.Home;
-import admin.ashak3lena.adminashak3elna.R;
+import admin.ashak3lena.adminashak3elna.*;
 import admin.ashak3lena.adminashak3elna.utils.*;
 import daboubi.khalid.faisalawe.com.sweetdialog.SweetAlertDialog;
 
@@ -31,6 +30,8 @@ public class login extends AppCompatActivity {
     public boolean loggedin = false;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    private final int TIME_OUT = 1800;
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,14 +107,16 @@ public class login extends AppCompatActivity {
                                     final String token = jsonObject1.getString("token");
                                     progressDialog.dismiss();
                                     final SweetAlertDialog dialog = new SweetAlertDialog(login.this, SweetAlertDialog.SUCCESS_TYPE);
-                                    dialog.setTitleText("شكرا لك");
-                                    dialog.setContentText(flag);
-                                    dialog.setConfirmText("موافق");
+                                   // dialog.setTitleText(flag);
+                                    dialog.setTitleText("تم تسجيل دخولك بنجاح");
+                                    dialog.setContentText("سيتم تحويلك الى شاشة الرئيسية");
                                     dialog.setColorTitleText(Color.parseColor("#babd16"));
                                     dialog.show();
-                                    dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    dialog.showConfirmButton(false);
+                                    handler=new Handler();
+                                    handler.postDelayed(new Runnable() {
                                         @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        public void run() {
                                             dialog.dismiss();
                                             Intent i = new Intent(login.this, Home.class);
                                             startActivity(i);
@@ -123,8 +126,7 @@ public class login extends AppCompatActivity {
                                             editor.commit();
                                             finish();
                                         }
-                                    });
-
+                                    }, TIME_OUT);
                                 }else if(f == 0){
 
                                     progressDialog.dismiss();

@@ -15,6 +15,7 @@ import com.android.volley.toolbox.*;
 
 import org.json.*;
 
+import java.text.*;
 import java.util.*;
 
 import admin.ashak3lena.adminashak3elna.*;
@@ -24,9 +25,11 @@ import daboubi.khalid.faisalawe.com.sweetdialog.*;
 
 public class DetailsCoupon extends AppCompatActivity {
     Bundle bundle;
+    Integer fActive;
     String id, delaerID, barcode, startdate, enddate, points, msg, msg2, scanStartDate, scanEndDate, used;
     TextView coupon_used, txtStartDate, txtEndDate, txtPoints, txtNumCoupons, txtStatus, txtDay, txtHour, txtMinute, txtSecond;
     Button btnReActive;
+
     SharedPreferences sharedPreferences;
     ViewPager viewPager;
 
@@ -51,9 +54,7 @@ public class DetailsCoupon extends AppCompatActivity {
     public void init() {
         sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
         bundle = getIntent().getExtras();
-        barcode = bundle.getString("barcode");
-
-//        barcode = "959426386104";
+         barcode = bundle.getString("barcode");
 
         viewPager = (ViewPager) findViewById(R.id.ViewPagerScanCoupon);
 
@@ -87,6 +88,7 @@ public class DetailsCoupon extends AppCompatActivity {
 //        finish();
     }
 
+
     public void getData() {
         final ProgressDialog pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
@@ -97,16 +99,17 @@ public class DetailsCoupon extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Log.e("daboubi",response);
+                            Log.e("daboubi", response);
                             JSONObject obj1Json = new JSONObject(response);
                             msg = obj1Json.getString("msg");
+                            fActive = obj1Json.getInt("f");
                             String b = obj1Json.getString("barcode");
                             if (b.equals(barcode)) {
-                                String d = obj1Json.getString("currentdate") + " " + obj1Json.getString("currenttime");
-                                String f = obj1Json.getString("scanenddate") + " " + obj1Json.getString("scanendtime");
-                                scanStartDate = d;
-                                scanEndDate = f;
-                                
+                                String current = obj1Json.getString("currentdate") + " " + obj1Json.getString("currenttime");
+                                String future = obj1Json.getString("scanenddate") + " " + obj1Json.getString("scanendtime");
+                                scanStartDate = current;
+                                scanEndDate = future;
+
                                 id = obj1Json.getString("id");
                                 enddate = obj1Json.getString("enddate");
                                 points = obj1Json.getString("points");
@@ -115,17 +118,37 @@ public class DetailsCoupon extends AppCompatActivity {
                                 msg2 = obj1Json.getString("msg2");
 
                                 txtStartDate.setText("تاريخ الاضافة : " + startdate);
-                                txtEndDate.setText("تاريخ الانتهاء : " + enddate);
+                                //   txtEndDate.setText("تاريخ الانتهاء : " + enddate);
+                                txtEndDate.setVisibility(View.GONE);
                                 txtNumCoupons.setText("الباركود : " + barcode);
                                 txtPoints.setText("عدد النقاط : " + points);
                                 used = obj1Json.getString("used");
+
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                try {
+                                    Date futureDate = dateFormat.parse(future);
+                                    Date currentDate = dateFormat.parse(current);
+//                                            Log.e("current date : ", String.valueOf(dateFormat.format(currentDate)));
+//                                            Log.e("current date future: ", String.valueOf(futureDate));
+                                    if (currentDate.after(futureDate)) {
+                                        dialogUsedCoupon(msg, false);
+                                    } else {
+                                        (findViewById(R.id.details_coupon)).setVisibility(View.VISIBLE);
+                                    }
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+
+                                }
+
 
                                 if (used.equals("1")) {
                                     btnReActive.setVisibility(View.GONE);
 //                                    btnReActive.setEnabled(false);
 //                                    btnReActive.setBackground(getResources().getDrawable(R.drawable.button_gray));
 //                                    coupon_used.setText("الكوبون مستخدم");
-                                    txtStatus.setText("الكوبون مستخدم");
+                                    (findViewById(R.id.content_CouponStatus)).setVisibility(View.INVISIBLE);
+//                                    txtStatus.setText("الكوبون مستخدم");
+//                                    txtStatus.setTextColor(getResources().getColor(R.color.greenAnswer));
                                     coupon_used.setText("الكوبون مستخدم");
                                 } else {
                                     btnReActive.setVisibility(View.VISIBLE);
@@ -135,14 +158,11 @@ public class DetailsCoupon extends AppCompatActivity {
                                     txtStatus.setText("الكوبون غير مستخدم");
                                     coupon_used.setText("الكوبون غير مستخدم");
                                 }
-                                (findViewById(R.id.details_coupon)).setVisibility(View.VISIBLE);
 
                                 pDialog.dismiss();
-                            }
-                            else
-                            {
+                            } else {
                                 pDialog.dismiss();
-                                dialogUsedCoupon(msg,false);
+                                dialogUsedCoupon(msg, false);
 
                             }
 
@@ -180,13 +200,15 @@ public class DetailsCoupon extends AppCompatActivity {
 
                             JSONObject obj1Json = new JSONObject(response);
                             JSONObject aaData = obj1Json.getJSONObject("aaData");
-                            String check_f = aaData.getString("f");
+                            Integer check_f = aaData.getInt("f");
                             String Flag = aaData.getString("flag");
 
-                           if (check_f.equals("1"))
-                           {
-                               dialogUsedCoupon(Flag,true);
-                           }
+                            Log.e("hisham", check_f + "");
+
+//                           if (check_f.equals("1"))
+                            if (check_f == (1)) {
+                                dialogUsedCoupon(Flag, false);
+                            }
 
                             getData();
 
@@ -224,12 +246,12 @@ public class DetailsCoupon extends AppCompatActivity {
         dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                dialog.dismiss();
-                if (!back)
-                {
+                if (!back) {
                     Intent i = new Intent(getApplicationContext(), Home.class);
                     startActivity(i);
+                    finish();
                 }
+                dialog.dismiss();
             }
         });
     }

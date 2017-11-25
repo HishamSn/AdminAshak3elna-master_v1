@@ -9,6 +9,7 @@
     <color name="colorHighlight">#e2e2e2</color>
 
     <color name="green">#babd16</color>
+    <color name="greenAnswer">#24ae10</color>
     <color name="silver">#ebebeb</color>
     <color name="orange">#f25822</color>
     <color name="dark_orange">#c6491b</color>

@@ -4,10 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.*;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+
 import admin.ashak3lena.adminashak3elna.Auth.login;
 import admin.ashak3lena.adminashak3elna.Coupon.*;
 import admin.ashak3lena.adminashak3elna.utils.*;
@@ -19,6 +20,9 @@ public class Home extends AppCompatActivity {
     ImageButton btnScan;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    private final int TIME_OUT = 1800;
+    Handler handler;
+    Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +50,11 @@ public class Home extends AppCompatActivity {
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(util.haveNetworkConnection(Home.this)){
+                if (util.haveNetworkConnection(Home.this)) {
                     Intent i = new Intent(Home.this, ScanCoupon.class);
                     i.putExtra("from", "MyCoupons");
                     startActivity(i);
-                }else{
+                } else {
                     util.dialogErrorInternet(Home.this);
                 }
             }
@@ -58,7 +62,7 @@ public class Home extends AppCompatActivity {
 
     }
 
-    public void logout(){
+    public void logout() {
         if (sharedPreferences.getBoolean("loggedin", false)) {
 
             final SweetAlertDialog dialog = new SweetAlertDialog(Home.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
@@ -76,35 +80,47 @@ public class Home extends AppCompatActivity {
                 }
             })
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(final SweetAlertDialog sDialog) {
-                            SharedPreferences preferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = preferences.edit();
-                            //Puting the value false for loggedin
-                            editor.putBoolean("loggedin", false);
-                            //Putting blank value to email
-                            editor.putString("token", "");
-                            editor.commit();
+                                                 @Override
+                                                 public void onClick(SweetAlertDialog sDialog) {
+                                                     sDialog = new SweetAlertDialog(Home.this, SweetAlertDialog.SUCCESS_TYPE);
 
-                            sDialog.setTitleText("تم تسجيل خروجك بنجاح")
-                                    .setContentText("سيتم تحويلك الى شاشة تسجيل الدخول")
-                                    .setConfirmText("موافق")
-                                    .showCancelButton(false)
-                                    .setCancelClickListener(null)
-                                    .setConfirmClickListener(null)
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            sDialog.dismiss();
-                                            Intent i = new Intent(Home.this, login.class);
-                                            startActivity(i);
-                                            finish();
-                                        }
-                                    })
-                                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                        }
-                    })
+                                                     SharedPreferences preferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                                                     SharedPreferences.Editor editor = preferences.edit();
+                                                     //Puting the value false for loggedin
+                                                     editor.putBoolean("loggedin", false);
+                                                     //Putting blank value to email
+                                                     editor.putString("token", "");
+                                                     editor.commit();
+                                                     sDialog.setTitleText("تم تسجيل خروجك بنجاح");
+                                                     sDialog.setContentText("سيتم تحويلك الى شاشة تسجيل الدخول");
+                                                     sDialog.showCancelButton(false);
+                                                     sDialog.showConfirmButton(false);
+                                                     sDialog.setCancelClickListener(null);
+                                                     sDialog.setConfirmClickListener(null);
+                                                     sDialog.showConfirmButton(false);
+                                                     sDialog.setColorTitleText(Color.parseColor("#babd16"));
+                                                     sDialog.show();
+                                                     sDialog.showConfirmButton(false);
+                                                     final SweetAlertDialog finalSDialog = sDialog;
+                                                     handler = new Handler();
+                                                     runnable = new Runnable() {
+                                                         @Override
+                                                         public void run() {
+                                                             dialog.dismiss();
+                                                             finalSDialog.dismiss();
+                                                             Intent i = new Intent(Home.this, login.class);
+                                                             startActivity(i);
+                                                             finish();
+
+                                                         }
+                                                     };
+                                                     handler.postDelayed(runnable, 2000);
+                                                 }
+                                             }
+                    )
                     .show();
+
+
         }
     }
 
@@ -125,6 +141,10 @@ public class Home extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         StartUp.getInstance().changeLanguage("ar");
+        if (handler != null) {
+            handler.removeCallbacks(runnable);
+            handler.removeCallbacksAndMessages(null);
+        }
     }
 
 
